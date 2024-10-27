@@ -9,7 +9,7 @@ import {
     StyleSheet,
     Dimensions,
     KeyboardAvoidingView,
-    Platform,
+    Platform, StatusBar,
 } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -71,6 +71,7 @@ const HomeScreen = ({ navigation }) => {
     const isDarkMode = theme === 'dark';
     const [activeCategory, setActiveCategory] = useState(1);
     const [selectedDesign, setSelectedDesign] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const [isNotificationPopupVisible, setIsNotificationPopupVisible] = useState(false);
 
     const styles = StyleSheet.create({
@@ -231,6 +232,7 @@ const HomeScreen = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
+
             {/* Header */}
             <View style={styles.header}>
                 <TouchableOpacity onPress={() => setIsNotificationPopupVisible(true)}>
@@ -327,7 +329,10 @@ const HomeScreen = ({ navigation }) => {
                             <TouchableOpacity
                                 key={design.id}
                                 style={styles.designExampleItem}
-                                onPress={() => setSelectedDesign(design)}
+                                onPress={() => {
+                                    setSelectedDesign(design)
+                                    setIsModalOpen(true)
+                                }}
                             >
                                 <Image
                                     source={design.image}
@@ -353,8 +358,8 @@ const HomeScreen = ({ navigation }) => {
             {/* Logo Detail Popup */}
             <LogoDetailPopup
                 logo={selectedDesign}
-                isVisible={!!selectedDesign}
-                onClose={() => setSelectedDesign(null)}
+                isVisible={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
                 isLightTheme={!isDarkMode}
             />
 

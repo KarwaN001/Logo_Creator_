@@ -8,13 +8,15 @@ import {
     TextInput,
     Animated,
     Dimensions,
-    ScrollView,
+    ScrollView, Pressable, StatusBar,
 } from 'react-native';
+import Modal from 'react-native-modal'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const { height } = Dimensions.get('window');
 
 export const LogoDetailPopup = ({ logo, isVisible, onClose, isLightTheme }) => {
+    console.log(logo);
     const slideAnim = useRef(new Animated.Value(height)).current;
 
     useEffect(() => {
@@ -105,38 +107,70 @@ export const LogoDetailPopup = ({ logo, isVisible, onClose, isLightTheme }) => {
         },
     });
 
-    if (!isVisible || !logo) return null;
+
 
     return (
-        <TouchableOpacity style={styles.overlay} activeOpacity={1} onPress={onClose}>
-            <Animated.View
-                style={[
-                    styles.container,
-                    {
-                        transform: [{ translateY: slideAnim }],
-                    },
-                ]}
+        <Modal
+            isVisible={isVisible}
+            animationIn={'slideInUp'}
+            animationOut={'slideOutDown'}
+            animationInTiming={250}
+            animationOutTiming={450}
+            useNativeDriver={true}
+            statusBarTranslucent={true}
+            onRequestClose={onClose}
+            swipeDirection={'down'}
+            onSwipeComplete={onClose}
+            customBackdrop={
+                <Pressable
+                    onPress={onClose}
+                    style={{
+                        height: Dimensions.get('window').height * 2,
+                        backgroundColor: 'rgba(0,0,0, 0.5)',
+                        padding: 0
+                    }}
+                />
+            }
+            style={
+                {
+                    alignItems: 'center',
+                    margin: 0,
+                    justifyContent: 'flex-end',
+                    transform: [{ translateY: slideAnim }],
+                }
+        }
+        >
+            <View
+                style={{
+                    backgroundColor: isLightTheme ? '#ffffff' : '#1a1a1a',
+                    borderTopRightRadius: 20,
+                    borderTopLeftRadius: 20,
+                    width: Dimensions.get('window').width,
+                    paddingHorizontal: 20,
+                    paddingVertical: 15,
+                }}
             >
-                <TouchableOpacity activeOpacity={1}>
-                    <ScrollView>
-                        <View style={styles.header}>
-                            <Text style={styles.title}>{logo.name}</Text>
-                            <TouchableOpacity onPress={onClose}>
-                                <Ionicons name="close" size={24} color={isLightTheme ? '#333' : '#fff'} />
-                            </TouchableOpacity>
-                        </View>
-                        <Image source={ logo.image } style={styles.image} />
-                        <Text style={styles.description}>{logo.description}</Text>
-                        <Text style={styles.creator}>Created by {logo.creator}</Text>
-                        <View style={styles.footer}>
-                            <Text style={styles.price}>${logo.price}</Text>
-                            <TouchableOpacity style={styles.buyButton}>
-                                <Text style={styles.buyButtonText}>Buy Now</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </ScrollView>
-                </TouchableOpacity>
-            </Animated.View>
-        </TouchableOpacity>
+                <View
+
+                >
+                    <View style={styles.header}>
+                        <Text style={styles.title}>{logo ? logo.name : ''}</Text>
+                        <TouchableOpacity onPress={onClose}>
+                            <Ionicons name="close" size={24} color={isLightTheme ? '#333' : '#fff'} />
+                        </TouchableOpacity>
+                    </View>
+                    <Image source={ logo ? logo.image : ''} style={styles.image} />
+                    <Text style={styles.description}>{logo ? logo.description : ''}</Text>
+                    <Text style={styles.creator}>Created by {logo ? logo.creator : ''}</Text>
+                    <View style={styles.footer}>
+                        <Text style={styles.price}>${logo ? logo.price : ''}</Text>
+                        <TouchableOpacity style={styles.buyButton}>
+                            <Text style={styles.buyButtonText}>Buy Now</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </View>
+        </Modal>
+
     );
 };

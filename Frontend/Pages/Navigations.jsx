@@ -6,8 +6,9 @@ import HomeScreen from './HomeScreen';
 import {SearchScreen} from './SearchScreen';
 import {ProfileScreen} from './ProfileScreen';
 
-import {Pressable, SafeAreaView} from "react-native";
+import {Pressable, SafeAreaView, StatusBar} from "react-native";
 import {useTheme} from "../DarkMode/ThemeContext";
+import React from "react";
 
 const Tab = createBottomTabNavigator();
 
@@ -38,9 +39,10 @@ const App = () => {
 
     return (
 
-        <SafeAreaView style={{ flex: 1, paddingTop: 30 }}>
+        <SafeAreaView style={{ flex: 1, paddingTop: 0 }}>
+            <StatusBar backgroundColor={isLightTheme ? '#ffffff' : '#1a1a1a'} barStyle={isLightTheme ? 'dark-content' : 'light-content'}/>
 
-                <Tab.Navigator
+            <Tab.Navigator
                     screenOptions={({ route }) => ({
                         headerShown: false, // This hides the top header
                         tabBarIcon: ({ focused }) => getTabBarIcon(route.name, focused),
