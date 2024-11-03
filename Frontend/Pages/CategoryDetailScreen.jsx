@@ -8,6 +8,8 @@ import {
     ScrollView,
     Image,
     Animated,
+    SafeAreaView,
+    StatusBar
 } from 'react-native';
 import { useTheme } from "../DarkMode/ThemeContext";
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -91,6 +93,10 @@ const CategoryDetailScreen = ({ route, navigation }) => {
             fontSize: 16,
             marginBottom: 8,
         },
+        safeArea: {
+            flex: 1,
+            backgroundColor: isDarkMode ? '#1a1a1a' : '#f5f5f5',
+        }
     });
 
     const handleCreate = () => {
@@ -119,61 +125,67 @@ const CategoryDetailScreen = ({ route, navigation }) => {
     };
 
     return (
-        <ScrollView style={styles.container}>
-            <Text style={styles.label}>Title</Text>
-            <TextInput
-                style={styles.input}
-                value={name}
-                onChangeText={setName}
-                placeholder="Enter design Title"
-                placeholderTextColor={isDarkMode ? '#999999' : '#666666'}
+        <SafeAreaView style={styles.safeArea}>
+            <StatusBar 
+                backgroundColor={isDarkMode ? '#1a1a1a' : '#f5f5f5'}
+                barStyle={isDarkMode ? 'light-content' : 'dark-content'}
             />
+            <ScrollView style={styles.container}>
+                <Text style={styles.label}>Title</Text>
+                <TextInput
+                    style={styles.input}
+                    value={name}
+                    onChangeText={setName}
+                    placeholder="Enter design Title"
+                    placeholderTextColor={isDarkMode ? '#999999' : '#666666'}
+                />
 
-            <Text style={styles.label}>Description</Text>
-            <TextInput
-                style={[styles.input, { height: 100 }]}
-                value={description}
-                onChangeText={setDescription}
-                placeholder="Describe how you want your design to look"
-                placeholderTextColor={isDarkMode ? '#999999' : '#666666'}
-                multiline
-            />
+                <Text style={styles.label}>Description</Text>
+                <TextInput
+                    style={[styles.input, { height: 100 }]}
+                    value={description}
+                    onChangeText={setDescription}
+                    placeholder="Describe how you want your design to look"
+                    placeholderTextColor={isDarkMode ? '#999999' : '#666666'}
+                    multiline
+                />
 
-            <Text style={styles.label}>Colors (Optional)</Text>
-            <TextInput
-                style={styles.input}
-                value={colors}
-                onChangeText={setColors}
-                placeholder="Enter preferred colors"
-                placeholderTextColor={isDarkMode ? '#999999' : '#666666'}
-            />
+                <Text style={styles.label}>Colors (Optional)</Text>
+                <TextInput
+                    style={styles.input}
+                    value={colors}
+                    onChangeText={setColors}
+                    placeholder="Enter preferred colors"
+                    placeholderTextColor={isDarkMode ? '#999999' : '#666666'}
+                />
 
-            <TouchableOpacity style={styles.imageButton} onPress={() => {/* Image selection logic */}}>
-                <Ionicons name="image-outline" size={24} color={isDarkMode ? '#ffffff' : '#333333'} />
-                <Text style={styles.imageButtonText}>Upload Image (Optional)</Text>
-            </TouchableOpacity>
+                <TouchableOpacity style={styles.imageButton} onPress={() => {/* Image selection logic */}}>
+                    <Ionicons name="image-outline" size={24} color={isDarkMode ? '#ffffff' : '#333333'} />
+                    <Text style={styles.imageButtonText}>Upload Image (Optional)</Text>
+                </TouchableOpacity>
 
-            {image && <Image source={{ uri: image }} style={styles.selectedImage} />}
+                {image && <Image source={{ uri: image }} style={styles.selectedImage} />}
 
-            <TouchableOpacity style={styles.button} onPress={handleCreate}>
-                <Text style={styles.buttonText}>Create - $15</Text>
-            </TouchableOpacity>
+                <TouchableOpacity style={styles.button} onPress={handleCreate}>
+                    <Text style={styles.buttonText}>Create - $15</Text>
+                </TouchableOpacity>
 
-            <Text style={styles.infoText}>
-                Your logo will be designed in approximately 4 days.
-                We will provide 3 samples of your logo for you to choose from.
-            </Text>
+                <Text style={styles.infoText}>
+                    Your logo will be designed in approximately 4 days.
+                    We will provide 3 samples of your logo for you to choose from.
+                </Text>
 
-            {showPopup && (
-                <Animated.View style={[styles.popup, { transform: [{ translateY: popupAnimation.interpolate({
-                            inputRange: [0, 1],
-                            outputRange: [300, 0]
-                        }) }] }]}>
-                    <Text style={styles.popupText}>Your design request has been submitted!</Text>
-                    <Text style={styles.popupText}>Check your current projects for updates.</Text>
-                </Animated.View>
-            )}
-        </ScrollView>
+                {showPopup && (
+                    <Animated.View style={[styles.popup, { transform: [{ translateY: popupAnimation.interpolate({
+                                inputRange: [0, 1],
+                                outputRange: [300, 0]
+                            }) }] }]}>
+                        <Text style={styles.popupText}>Your design request has been submitted!</Text>
+                        <Text style={styles.popupText}>Check your current projects for updates.</Text>
+                    </Animated.View>
+                )}
+            </ScrollView>
+        </SafeAreaView>
     );
 };
 

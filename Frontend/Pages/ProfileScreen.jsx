@@ -1,10 +1,12 @@
 import { View, Text, Switch, StyleSheet, ScrollView, Image, Pressable, Platform } from 'react-native';
 import { useTheme } from '../DarkMode/ThemeContext';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useNavigation } from '@react-navigation/native';
 
 export const ProfileScreen = () => {
     const { theme, toggleTheme } = useTheme();
     const isLightTheme = theme === 'light';
+    const navigation = useNavigation();
 
     const menuItems = [
         { icon: 'account-edit', title: 'Edit Profile', subtitle: 'Update your information' },
@@ -22,6 +24,11 @@ export const ProfileScreen = () => {
                 { backgroundColor: isLightTheme ? '#fff' : '#2A2A2A' }
             ]}
             android_ripple={{ color: isLightTheme ? '#eee' : '#333' }}
+            onPress={() => {
+                if (title === 'Edit Profile') {
+                    navigation.navigate('EditProfile');
+                }
+            }}
         >
             <Icon
                 name={icon}

@@ -236,7 +236,26 @@ const HomeScreen = ({ navigation }) => {
             {/* Header */}
             <View style={styles.header}>
                 <TouchableOpacity onPress={() => setIsNotificationPopupVisible(true)}>
-                    <Ionicons name="notifications-outline" size={24} color={isDarkMode ? '#ffffff' : '#333333'} />
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                        <Ionicons name="notifications-outline" size={24} color={isDarkMode ? '#ffffff' : '#333333'} />
+                        {notifications?.filter(n => !n.isRead).length > 0 && (
+                            <View style={{
+                                position: 'absolute',
+                                right: -6,
+                                top: -6,
+                                backgroundColor: '#007AFF',
+                                borderRadius: 10,
+                                minWidth: 20,
+                                height: 20,
+                                justifyContent: 'center',
+                                alignItems: 'center'
+                            }}>
+                                <Text style={{color: '#fff', fontSize: 12, fontWeight: 'bold'}}>
+                                    {notifications?.filter(n => !n.isRead).length}
+                                </Text>
+                            </View>
+                        )}
+                    </View>
                 </TouchableOpacity>
                 <Text style={styles.headerTitle}>Welcome</Text>
                 <View style={{ width: 24 }}></View>
@@ -375,11 +394,25 @@ const HomeScreen = ({ navigation }) => {
 };
 
 const App = () => {
+    const { theme } = useTheme();
     return (
 
             <Stack.Navigator>
                 <Stack.Screen name="HomeScreen" component={HomeScreen} options={{ headerShown: false, }} />
-                <Stack.Screen name="CategoryDetail" component={CategoryDetailScreen}  options={({ route }) => ({ title: route.params.category.name  })} />
+                <Stack.Screen 
+                    name="CategoryDetail" 
+                    component={CategoryDetailScreen}  
+                    options={({ route }) => ({ 
+                        title: route.params.category.name,
+                        headerStyle: {
+                            backgroundColor: theme === 'dark' ? '#1a1a1a' : '#ffffff',
+                        },
+                        headerTintColor: theme === 'dark' ? '#ffffff' : '#333333',
+                        headerTitleStyle: {
+                            color: theme === 'dark' ? '#ffffff' : '#333333',
+                        }
+                    })} 
+                />
             </Stack.Navigator>
 
     );

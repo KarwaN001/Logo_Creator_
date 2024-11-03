@@ -66,6 +66,14 @@ export const NotificationPopup = ({
 
     if (!isVisible) return null;
 
+    const handleNotificationPress = (item) => {
+        // Mark notification as read
+        item.isRead = true;
+        
+    
+        console.log('Notification pressed:', item);
+    };
+
     return (
         <TouchableOpacity
             style={StyleSheet.absoluteFill}
@@ -95,10 +103,7 @@ export const NotificationPopup = ({
                             message={item.message}
                             time={item.time}
                             isRead={item.isRead}
-                            onPress={() => {
-                                // Handle notification press
-                                console.log('Notification pressed:', item);
-                            }}
+                            onPress={() => handleNotificationPress(item)}
                             isDarkMode={isDarkMode}
                         />
                     )}
